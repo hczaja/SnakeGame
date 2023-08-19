@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Engine.Core;
 
-namespace Snake
+namespace SnakeGame
 {
-    internal class SnakeGameSettings : IGameSettings
+    internal class SnakeSettings : IGameSettings
     {
-        public uint WindowWidth => 1024;
-        public uint WindowHeight => 768;
+        public uint WindowWidth => 800;
+        public uint WindowHeight => 600;
         public string GameTitle => "Snake";
         public string GameVersion => throw new NotImplementedException();
         public int FPS => 30;

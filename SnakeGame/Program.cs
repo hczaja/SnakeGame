@@ -1,5 +1,6 @@
 ﻿using Engine.Core;
-using Snake;
+using SnakeGame;
 
-var engine = new GameEngine(new SnakeGame(), new SnakeGameSettings());
+var settings = new SnakeSettings();
+var engine = new GameEngine(new Snake(settings), settings);
 engine.Start();

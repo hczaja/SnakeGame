@@ -23,14 +23,16 @@ namespace Engine.Core
 
             this._window.SetKeyRepeatEnabled(enable: false);
 
-            this._window.Closed += _game._window_MouseMoved;
+            this._game = game;
+
+            this._window.Closed += (_, _) => Close();
             this._window.KeyPressed += _game._window_KeyPressed;
             this._window.KeyReleased += _game._window_KeyReleased;
             this._window.MouseButtonPressed += _game._window_MouseButtonPressed;
             this._window.MouseButtonReleased += _game._window_MouseButtonReleased;
             this._window.MouseMoved += _game._window_MouseMoved;
 
-            this._game = game;
+            _game.Close += (_, _) => Close();
         }
 
         internal void Clear() => _window.Clear(Color.Black);
@@ -44,5 +46,7 @@ namespace Engine.Core
         internal bool IsOpen() => _window.IsOpen;
 
         internal void Update() => _game.Update();
+
+        public void Close() => _window.Close();
     }
 }

@@ -1,2 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Engine.Core;
+using Snake;
+
+var engine = new GameEngine(new SnakeGame(), new SnakeGameSettings());
+engine.Start();

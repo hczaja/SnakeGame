@@ -40,7 +40,7 @@ namespace SnakeGame.Core.Contents
 
             Vector2f size = new(64f, 32f);
 
-            var restart = new Button(size, new(Summary.Position.X, Summary.Position.Y + Summary.GetGlobalBounds().Height + 16f),
+            var restart = new Button(size, new(Summary.Position.X, Summary.Position.Y + Summary.GetGlobalBounds().Height + 32f),
                 new Texture("Assets/Start_0.png"),
                 new Texture("Assets/Start_1.png"));
             this._buttons.Add(restart);

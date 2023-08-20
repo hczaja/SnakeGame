@@ -25,7 +25,7 @@ namespace SnakeGame.Core.Contents.MainGame
 
         public string GetScore() => 
             $"You've scored {CurrentApples}/{_maxApples} points " +
-            $"in {GetElapsedTime().ToString("0.000")} " +
+            $"in {GetElapsedTime().ToString("0.000")}s " +
             $"({DateTime.Now.ToShortDateString()})";
 
         private float GetElapsedTime()

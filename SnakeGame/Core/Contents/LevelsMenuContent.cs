@@ -102,7 +102,7 @@ namespace SnakeGame.Core.Contents
 
         public void Update() { }
 
-        public string GetLevelId() => "2";
+        public string GetLevelId() => (this._currentButtonIndex + 1).ToString();
 
         public object GetAdditionalData() => throw new NotImplementedException();
     }

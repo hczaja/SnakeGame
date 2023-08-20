@@ -1,4 +1,7 @@
-﻿using Engine.Time;
+﻿using Engine.Core;
+using Engine.Graphics;
+using Engine.Time;
+using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.Levels;
 using System;
 using System.Collections.Generic;
@@ -8,29 +11,43 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Core.Contents.MainGame
 {
-    internal class Score
+    internal class Score : IDrawable
     {
         private readonly GameTimer _timer;
 
         private int CurrentApples { get; set; }
         private readonly int _maxApples;
 
-        public Score(int maxApples)
+        private Text Text { get; }
+        private readonly string _levelName;
+
+        public Score(int maxApples, string levelName, IGameSettings settings)
         {
             _maxApples = maxApples;
             _timer = new GameTimer();
+            _levelName = levelName;
+
+            Text = new Text()
+            {
+                CharacterSize = 32,
+                Font = settings.Font,
+                FillColor = Color.White,
+                Position = new (32f, settings.WindowHeight - 64f - 16f),
+                DisplayedString = ""
+            };
         }
 
         public void AddApple() => CurrentApples++;
 
-        public string GetScore() => 
+        public string GetFinalScore() => 
             $"You've scored {CurrentApples}/{_maxApples} points " +
             $"in {GetElapsedTime().ToString("0.000")}s " +
             $"({DateTime.Now.ToShortDateString()})";
 
+        private string GetScoreDescription() => $"{_levelName} - Score: {CurrentApples}/{_maxApples}, Time: {GetElapsedTime().ToString("0.000")}s";
+
         private float GetElapsedTime()
         {
-            _timer.Stop();
             return _timer.RealTime;
         }
 
@@ -38,6 +55,12 @@ namespace SnakeGame.Core.Contents.MainGame
         {
             _timer.Update();
             CurrentApples = level.GetAtedApples();
+            Text.DisplayedString = GetScoreDescription();
+        }
+
+        public void Draw(RenderTarget render)
+        {
+            render.Draw(Text);
         }
     }
 }

@@ -12,10 +12,10 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
         private static readonly string ROW_SPACING = Environment.NewLine;
         private static readonly string COL_SPACING = " ";
 
-        private const string EMPTY = "0";
-        private const string WALL = "1";
-        private const string SNAKE = "2";
-        private const string APPLE = "3";
+        private const string EMPTY = ".";
+        private const string WALL = "=";
+        private const string SNAKE = "s";
+        private const string APPLE = "o";
 
         public Level Load(string path, IGameState state)
         {

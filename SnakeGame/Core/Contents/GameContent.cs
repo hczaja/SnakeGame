@@ -30,12 +30,16 @@ namespace SnakeGame.Core.Contents
             var loader = new LevelLoader();
             _level = loader.Load($"Assets/Levels/Level{levelId}.txt", _state);
 
-            _score = new Score(_level.GetMaxApples());
+            _score = new Score(
+                _level.GetMaxApples(),
+                _level.Name,
+                _state.GetSettings());
         }
 
         public void Draw(RenderTarget render) 
         {
             _level.Draw(render);
+            _score.Draw(render);
         }
 
         public string GetLevelId() => _levelId;
@@ -43,7 +47,7 @@ namespace SnakeGame.Core.Contents
         public object GetAdditionalData()
         {
             _score.Update(_level);
-            return _score.GetScore();
+            return _score.GetFinalScore();
         }
 
         public void Handle(KeyboardEvent @event) 

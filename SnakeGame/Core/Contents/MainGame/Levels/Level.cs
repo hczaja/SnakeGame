@@ -15,7 +15,7 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
     internal class Level : 
         IDrawable, IUpdatable, IEventHandler<KeyboardEvent>
     {
-        private string Name { get; }
+        public string Name { get; }
 
         private int N { get; }
         private int M { get; }

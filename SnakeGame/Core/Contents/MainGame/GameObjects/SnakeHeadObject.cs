@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Core.Contents.MainGame.GameObjects
 {
-    internal class SnakeHead : IGameObject
+    internal class SnakeHeadObject : IGameObject
     {
         public int X { get; private set; }
         public int Y { get; private set; }
@@ -34,7 +34,7 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
         private static readonly float HEAD_WIDTH = 32f;
         private static readonly float HEAD_HEIGHT = 32f;
 
-        public SnakeHead(int x, int y) 
+        public SnakeHeadObject(int x, int y) 
         {
             this.X = x; 
             this.Y = y;

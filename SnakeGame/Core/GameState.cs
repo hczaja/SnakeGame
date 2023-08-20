@@ -12,11 +12,14 @@ using System.Threading.Tasks;
 
 namespace SnakeGame
 {
-    internal interface IGameState : ICoreGameState, IEventHandler<ChangeContentEvent> { }
+    internal interface IGameState : ICoreGameState, IEventHandler<ChangeContentEvent>
+    {
+        IContent ActualContent { get; }
+    }
 
     internal class GameState : IGameState
     {
-        private IContent ActualContent { get; set; }
+        public IContent ActualContent { get; private set; }
 
         private readonly IGameSettings _settings;
         private readonly IGame _game;
@@ -55,7 +58,10 @@ namespace SnakeGame
                     this.ActualContent = new LevelsMenuContent(this);
                     break;
                 case ChangeContentEventType.Game:
-                    this.ActualContent = new GameContent(this, ((LevelsMenuContent)ActualContent).GetLevelId()); 
+                    this.ActualContent = new GameContent(this, ActualContent.GetLevelId()); 
+                    break;
+                case ChangeContentEventType.LevelSummary:
+                    this.ActualContent = new LevelSummaryContent(this, ActualContent.GetLevelId());
                     break;
                 case ChangeContentEventType.Exit:
                     this._game.Close?.Invoke(null, new EventArgs());

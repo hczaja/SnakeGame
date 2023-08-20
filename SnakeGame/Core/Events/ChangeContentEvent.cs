@@ -12,6 +12,7 @@ namespace SnakeGame.Core.Events
         MainMenu, 
         LevelsMenu,
         Game,
+        LevelSummary,
         Exit
     }
 

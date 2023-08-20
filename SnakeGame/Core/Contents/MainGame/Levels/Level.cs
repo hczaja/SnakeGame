@@ -84,16 +84,16 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
                 if (obj is AppleObject)
                 {
                     Cells[Player.X, Player.Y].Fill(EmptyObject.Instance);
+                    Player.Elongate();
+
                     if (CheckVictoryConditions())
                     {
-                        _state.Handle(new ChangeContentEvent(ChangeContentEventType.LevelsMenu));
+                        _state.Handle(new ChangeContentEvent(ChangeContentEventType.LevelSummary));
                     }
-
-                    Player.Elongate();
                 }
-                if (obj is WallObject)
+                if (obj is WallObject || Player.EatsOwnTail())
                 {
-                    _state.Handle(new ChangeContentEvent(ChangeContentEventType.LevelsMenu));
+                    _state.Handle(new ChangeContentEvent(ChangeContentEventType.LevelSummary));
                 }
             }
         }
@@ -106,15 +106,28 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
                 {
                     if (Cells[i, j].HasApple())
                         return false;
-                    
-                    ;
                 }
             }
 
             return true;
         }
 
-        //private bool 
+        public int GetMaxApples()
+        {
+            int max = 0;
+            for (var i = 0; i < N; i++)
+            {
+                for (var j = 0; j < M; j++)
+                {
+                    if (Cells[i, j].HasApple())
+                        max++;
+                }
+            }
+
+            return max;
+        }
+
+        public int GetAtedApples() => this.Player.Length; 
 
         public void Handle(KeyboardEvent @event)
         {

@@ -12,5 +12,8 @@ namespace Engine.Graphics
         IDrawable,
         IUpdatable,
         IEventHandler<KeyboardEvent>
-    { }
+    {
+        string GetLevelId();
+        object GetAdditionalData();
+    }
 }

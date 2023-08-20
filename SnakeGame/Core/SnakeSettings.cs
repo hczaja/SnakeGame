@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Engine.Core;
+using SFML.Graphics;
 
 namespace SnakeGame
 {
@@ -15,5 +16,7 @@ namespace SnakeGame
         public string GameVersion => throw new NotImplementedException();
         public int FPS => 30;
         public bool EnableKeyRepeat => true;
+
+        public Font Font => new Font("Assets/rainyhearts.ttf");
     }
 }

@@ -15,8 +15,8 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
 {
     internal class SnakeObject : IGameObject
     {
-        private readonly SnakeHead _head;
-        private readonly List<SnakeBody> _body;
+        private readonly SnakeHeadObject _head;
+        private readonly List<SnakeBodyObject> _body;
 
         private readonly GameStopwatch _stopwatch;
 
@@ -27,10 +27,10 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
 
         public SnakeObject(int x, int y)
         {
-            this._head = new SnakeHead(x, y);
+            this._head = new SnakeHeadObject(x, y);
 
-            this._body = new List<SnakeBody>();
-            var part = new SnakeBody(x, y + 1);
+            this._body = new List<SnakeBodyObject>();
+            var part = new SnakeBodyObject(x, y + 1);
             this._body.Add(part);
 
             _stopwatch = new GameStopwatch(REGULAR_SPEED);
@@ -38,6 +38,8 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
 
         public int X => this._head.X;
         public int Y => this._head.Y;
+
+        public int Length => this._body.Count - 1;
 
         public void Draw(RenderTarget render)
         {
@@ -102,8 +104,10 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
 
         internal void Elongate()
         {
-            SnakeBody body = new SnakeBody(-1, -1);
+            SnakeBodyObject body = new SnakeBodyObject(-1, -1);
             this._body.Add(body);
         }
+
+        internal bool EatsOwnTail() => _body.ToList().Any(b => X == b.X && Y == b.Y);
     }
 }

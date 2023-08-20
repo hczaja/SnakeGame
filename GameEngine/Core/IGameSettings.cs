@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SFML.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,6 @@ namespace Engine.Core
         string GameVersion { get; }
         int FPS { get; }
         bool EnableKeyRepeat { get; }
+        Font Font { get; }
     }
 }

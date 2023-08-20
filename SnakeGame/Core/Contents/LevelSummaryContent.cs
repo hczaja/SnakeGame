@@ -1,5 +1,4 @@
-﻿using Engine.Core;
-using Engine.Events;
+﻿using Engine.Events;
 using Engine.Graphics;
 using SFML.Graphics;
 using SFML.System;
@@ -7,38 +6,51 @@ using SFML.Window;
 using SnakeGame.Core.Events;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SnakeGame.Core.Contents
 {
-    internal class MenuContent : IContent
+    internal class LevelSummaryContent : IContent
     {
         private readonly IGameState _state;
+        private readonly string _levelId;
+
+        private Text Summary;
 
         private readonly List<Button> _buttons;
         private int _currentButtonIndex;
 
-        public MenuContent(IGameState state)
+        public LevelSummaryContent(IGameState state, string levelId)
         {
             _state = state;
+            _levelId = levelId;
+
+            this.Summary = new Text() 
+            { 
+                Font = state.GetSettings().Font,
+                DisplayedString = (string)_state.ActualContent.GetAdditionalData(),
+                Position = new (32f, 32f),
+                CharacterSize = 32
+            };
 
             this._buttons = new List<Button>();
 
             Vector2f size = new(64f, 32f);
 
-            var startButton = new Button(size, new(32f, 32f),
+            var restart = new Button(size, new(Summary.Position.X, Summary.Position.Y + Summary.GetGlobalBounds().Height + 16f),
                 new Texture("Assets/Start_0.png"),
                 new Texture("Assets/Start_1.png"));
-            this._buttons.Add(startButton);
+            this._buttons.Add(restart);
 
-            var exitButton = new Button(
-                size, 
-                startButton.GetPosition() + new Vector2f(0f, startButton.GetSize().Y + 16f),
+            var back = new Button(
+                size,
+                restart.GetPosition() + new Vector2f(0f, restart.GetSize().Y + 16f),
                 new Texture("Assets/Exit_0.png"),
                 new Texture("Assets/Exit_1.png"));
-            this._buttons.Add(exitButton);
+            this._buttons.Add(back);
 
             this._currentButtonIndex = 0;
             this._buttons[this._currentButtonIndex].Cover();
@@ -46,15 +58,13 @@ namespace SnakeGame.Core.Contents
 
         public void Draw(RenderTarget render)
         {
+            render.Draw(Summary);
+
             foreach (var button in _buttons)
             {
                 button.Draw(render);
             }
         }
-
-        public string GetLevelId() => throw new NotImplementedException();
-
-        public object GetAdditionalData() => throw new NotImplementedException();
 
         public void Handle(KeyboardEvent @event)
         {
@@ -79,8 +89,8 @@ namespace SnakeGame.Core.Contents
                     _state.Handle(
                         new ChangeContentEvent(
                             this._currentButtonIndex == 0
-                                ? ChangeContentEventType.LevelsMenu
-                                : ChangeContentEventType.Exit));
+                                ? ChangeContentEventType.Game
+                                : ChangeContentEventType.LevelsMenu));
                 }
 
                 foreach (var button in _buttons)
@@ -91,5 +101,9 @@ namespace SnakeGame.Core.Contents
         }
 
         public void Update() { }
+
+        public string GetLevelId() => _levelId;
+
+        public object GetAdditionalData() => throw new NotImplementedException();
     }
 }

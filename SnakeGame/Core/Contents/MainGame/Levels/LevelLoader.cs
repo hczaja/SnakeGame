@@ -63,14 +63,14 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
                 {
                     IGameObject obj = cols[j] switch
                     {
-                        WALL => new WallObject(i, j),
-                        SNAKE => new SnakeObject(i, j),
-                        APPLE => new AppleObject(i, j),
+                        WALL => new WallObject(j, i),
+                        SNAKE => new SnakeObject(j, i),
+                        APPLE => new AppleObject(j, i),
                         EMPTY => EmptyObject.Instance,
                         _ => EmptyObject.Instance
                     };
 
-                    result.FillCell(i, j, obj);
+                    result.FillCell(j, i, obj);
                 }
             }
 

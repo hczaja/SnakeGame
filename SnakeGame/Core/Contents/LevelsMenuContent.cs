@@ -101,5 +101,7 @@ namespace SnakeGame.Core.Contents
         }
 
         public void Update() { }
+
+        internal string GetLevelId() => "1";
     }
 }

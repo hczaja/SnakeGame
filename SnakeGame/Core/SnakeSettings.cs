@@ -14,5 +14,6 @@ namespace SnakeGame
         public string GameTitle => "Snake";
         public string GameVersion => throw new NotImplementedException();
         public int FPS => 30;
+        public bool EnableKeyRepeat => true;
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnakeGame.Core.Levels
+namespace SnakeGame.Core.Contents.MainGame
 {
-    internal interface ILevel
+    internal class Score
     {
     }
 }

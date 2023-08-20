@@ -21,7 +21,7 @@ namespace Engine.Core
                     settings.WindowHeight),
                 settings.GameTitle);
 
-            this._window.SetKeyRepeatEnabled(enable: false);
+            this._window.SetKeyRepeatEnabled(enable: settings.EnableKeyRepeat);
 
             this._game = game;
 

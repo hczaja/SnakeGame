@@ -1,9 +1,10 @@
-﻿using Engine.Core;
-using Engine.Events;
+﻿using Engine.Events;
 using Engine.Graphics;
+using Engine.Time;
 using SFML.Graphics;
-using SFML.System;
-using SFML.Window;
+using SnakeGame.Core.Contents.MainGame;
+using SnakeGame.Core.Contents.MainGame.GameObjects;
+using SnakeGame.Core.Contents.MainGame.Levels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,15 +17,30 @@ namespace SnakeGame.Core.Contents
     {
         private readonly IGameState _state;
 
-        public GameContent(IGameState state)
+        private readonly Level _level;
+        private readonly Score _score;
+
+        public GameContent(IGameState state, string levelId)
         {
             _state = state;
+
+            var loader = new LevelLoader();
+            _level = loader.Load($"Assets/Levels/Level{levelId}.txt", _state);
         }
 
-        public void Draw(RenderTarget render) { }
+        public void Draw(RenderTarget render) 
+        {
+            _level.Draw(render);
+        }
 
-        public void Handle(KeyboardEvent @event) { }
+        public void Handle(KeyboardEvent @event) 
+        {
+            _level.Handle(@event);
+        }
 
-        public void Update() { }
+        public void Update() 
+        {
+            _level.Update();
+        }
     }
 }

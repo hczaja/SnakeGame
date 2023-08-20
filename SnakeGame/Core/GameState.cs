@@ -55,7 +55,7 @@ namespace SnakeGame
                     this.ActualContent = new LevelsMenuContent(this);
                     break;
                 case ChangeContentEventType.Game:
-                    this.ActualContent = new GameContent(this); 
+                    this.ActualContent = new GameContent(this, ((LevelsMenuContent)ActualContent).GetLevelId()); 
                     break;
                 case ChangeContentEventType.Exit:
                     this._game.Close?.Invoke(null, new EventArgs());

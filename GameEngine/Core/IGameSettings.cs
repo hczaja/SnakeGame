@@ -13,5 +13,6 @@ namespace Engine.Core
         string GameTitle { get; }
         string GameVersion { get; }
         int FPS { get; }
+        bool EnableKeyRepeat { get; }
     }
 }

@@ -1,0 +1,12 @@
+﻿sorted by priority:
+- animacje
+
+- wiecej map
+- gui
+- przeciwnicy
+
+- ladderboard
+- portale
+- energia na przyspieszenie
+
+- itemy ze specyficznym dzialaniem

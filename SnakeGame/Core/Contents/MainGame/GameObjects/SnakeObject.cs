@@ -23,7 +23,10 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
         private static readonly float REGULAR_SPEED = 1f;
         private static readonly float ACCELERATION = 0.05f;
         private static readonly float MAX_SPEED = 0.25f;
-        private float Speed { get; set; } = REGULAR_SPEED;
+
+        private float BaseSpeed { get; set; } = REGULAR_SPEED;
+        private float CurrentSpeed { get; set; } = REGULAR_SPEED;
+        private bool Accelerate { get; set; } = false;
 
         public SnakeObject(int x, int y)
         {
@@ -33,7 +36,7 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
             var part = new SnakeBodyObject(x, y + 1);
             this._body.Add(part);
 
-            _stopwatch = new GameStopwatch(REGULAR_SPEED);
+            _stopwatch = new GameStopwatch(BaseSpeed);
         }
 
         public int X => this._head.X;
@@ -66,10 +69,7 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
                         _head.TurnDown();
                         break;
                     case Keyboard.Key.Space:
-                        if (Speed > MAX_SPEED)
-                            Speed -= ACCELERATION;
-
-                        _stopwatch.ChangeTimer(Speed);
+                        SpeedUp();
                         break;
                 }
             }
@@ -78,35 +78,61 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
                 switch (@event.Key)
                 {
                     case Keyboard.Key.Space:
-                        _stopwatch.ChangeTimer(REGULAR_SPEED);
+                        SlowDown();
                         break;
                 }
             }
         }
 
+        private void SpeedUp() => Accelerate = true;
+
+        private void SlowDown() => Accelerate = false;
+
         public void Update()
         {
+            UpdateSpeed();
             if (!_stopwatch.Update())
             {
+                UpdatePositions();
+
                 _stopwatch.Restart();
-
-                for (int i = _body.Count - 1; i > 0; i--) 
-                {
-                    _body[i].Move(_body[i - 1].X, _body[i - 1].Y);
-                    _body[i].Update();
-                }
-                _body[0].Move(_head.X, _head.Y);
-                _body[0].Update();
-
-                this._head.Update();
             }
         }
 
-        internal void Elongate()
+        private void UpdatePositions()
         {
-            SnakeBodyObject body = new SnakeBodyObject(-1, -1);
-            this._body.Add(body);
+            for (int i = _body.Count - 1; i > 0; i--)
+            {
+                _body[i].Move(_body[i - 1].X, _body[i - 1].Y);
+                _body[i].Update();
+            }
+
+            _body[0].Move(_head.X, _head.Y);
+            _body[0].Update();
+
+            this._head.Update();
         }
+
+        private void UpdateSpeed()
+        {
+            if (Accelerate)
+            {
+                if (CurrentSpeed > MAX_SPEED)
+                    CurrentSpeed -= ACCELERATION;
+
+                _stopwatch.ChangeTimer(CurrentSpeed);
+            }
+            else
+            {
+                if (CurrentSpeed != BaseSpeed)
+                {
+                    CurrentSpeed = BaseSpeed;
+                    _stopwatch.ChangeTimer(CurrentSpeed);
+                }
+            }
+        }
+
+        internal void Elongate() => this._body.Add(new SnakeBodyObject(-1, -1));
 
         internal bool EatsOwnTail() => _body.ToList().Any(b => X == b.X && Y == b.Y);
     }

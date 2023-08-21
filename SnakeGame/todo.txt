@@ -1,12 +1,15 @@
 ﻿sorted by priority:
-- animacje
+- portale
+- przeciwnicy
 
 - wiecej map
 - gui
-- przeciwnicy
+
+- animacje
 
 - ladderboard
-- portale
 - energia na przyspieszenie
+
+- poola gdzie nie wolno skrecac
 
 - itemy ze specyficznym dzialaniem

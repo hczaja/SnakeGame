@@ -17,6 +17,12 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
         private const string SNAKE = "s";
         private const string APPLE = "o";
 
+        private const string RED_PORTAL_START = "[";
+        private const string RED_PORTAL_END = "]";
+
+        private const string BLUE_PORTAL_START = "{";
+        private const string BLUE_PORTAL_END = "}";
+
         public Level Load(string path, IGameState state)
         {
             Level result = null;
@@ -56,6 +62,7 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
             string map = mapBuilder.ToString();
             var rows = map.Split(ROW_SPACING).Where(r => !string.IsNullOrEmpty(r)).ToArray();
 
+            var portals = new List<PortalObject>();
             for (int i = 0; i < rows.Length; i++)
             {
                 var cols = rows[i].Split(COL_SPACING);
@@ -67,12 +74,29 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
                         SNAKE => new SnakeObject(j, i),
                         APPLE => new AppleObject(j, i),
                         EMPTY => EmptyObject.Instance,
+                        RED_PORTAL_START => new PortalObject(j, i, PortalType.Red),
+                        RED_PORTAL_END => new PortalObject(j, i, PortalType.Red),
+                        BLUE_PORTAL_START => new PortalObject(j, i, PortalType.Blue),
+                        BLUE_PORTAL_END => new PortalObject(j, i, PortalType.Blue),
                         _ => EmptyObject.Instance
                     };
+
+                    if (obj is PortalObject p)
+                        portals.Add(p);
 
                     result.FillCell(j, i, obj);
                 }
             }
+
+            foreach (var group in portals.GroupBy(p => p.Type))
+            {
+                var start = group.First();
+                var end = group.Last();
+
+                start.SetDestination(end);
+                end.SetDestination(start);
+            }
+
 
             return result;
         }

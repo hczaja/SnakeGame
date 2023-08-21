@@ -44,6 +44,8 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
 
         public int Length => this._body.Count - 1;
 
+        public bool IsInPortal { get; private set; }
+
         public void Draw(RenderTarget render)
         {
             this._head.Draw(render);
@@ -132,8 +134,19 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
             }
         }
 
-        internal void Elongate() => this._body.Add(new SnakeBodyObject(-1, -1));
+        internal void Elongates() => this._body.Add(new SnakeBodyObject(-1, -1));
 
         internal bool EatsOwnTail() => _body.ToList().Any(b => X == b.X && Y == b.Y);
+
+        internal void EntersPortal(int destinationX, int destinationY)
+        {
+            if (!IsInPortal)
+            {
+                IsInPortal = true;
+                _head.MoveTo(destinationX, destinationY);
+            }
+            else
+                IsInPortal = false;
+        }
     }
 }

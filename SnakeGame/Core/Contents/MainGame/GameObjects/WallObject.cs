@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using SnakeGame.Core.Contents.MainGame.Levels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,8 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
         {
             this.Rectangle = new RectangleShape()
             {
-                Size = new(32f, 32f),
-                Position = new(x * 32f, y * 32f),
+                Size = new(Cell.CELL_SIZE, Cell.CELL_SIZE),
+                Position = new(x * Cell.CELL_SIZE, y * Cell.CELL_SIZE),
                 Texture = new Texture("Assets/Wall.png")
             };
         }

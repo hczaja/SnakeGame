@@ -2,6 +2,7 @@
 using Engine.Graphics;
 using SFML.Graphics;
 using SFML.System;
+using SnakeGame.Core.Contents.MainGame.Levels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
     {
         public int X { get; private set; }
         public int Y { get; private set; }
-
+        
         private Vector2f Direction;
 
         private readonly RectangleShape Rectangle;
@@ -31,9 +32,6 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
         private static readonly Vector2f DirectionDown = new Vector2f(0f, -1f);
         private static readonly Texture HeadDownTexture = new Texture("Assets/SnakeHead_D.png");
 
-        private static readonly float HEAD_WIDTH = 32f;
-        private static readonly float HEAD_HEIGHT = 32f;
-
         public SnakeHeadObject(int x, int y) 
         {
             this.X = x; 
@@ -41,8 +39,8 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
 
             this.Rectangle = new RectangleShape()
             {
-                Size = new(HEAD_WIDTH, HEAD_HEIGHT),
-                Position = new(x * HEAD_WIDTH, y * HEAD_HEIGHT),
+                Size = new(Cell.CELL_SIZE, Cell.CELL_SIZE),
+                Position = new(x * Cell.CELL_SIZE, y * Cell.CELL_SIZE),
                 Texture = new Texture("Assets/SnakeHead_U.png")
             };
 
@@ -96,8 +94,18 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
             this.Y += (int)this.Direction.Y;
 
             this.Rectangle.Position = new(
-                HEAD_WIDTH * X, 
-                HEAD_HEIGHT * Y);
+                Cell.CELL_SIZE * X,
+                Cell.CELL_SIZE * Y);
+        }
+
+        internal void MoveTo(int destinationX, int destinationY)
+        {
+            this.X = destinationX + (int)Direction.X;
+            this.Y = destinationY + (int)Direction.Y;
+
+            this.Rectangle.Position = new(
+                Cell.CELL_SIZE * X,
+                Cell.CELL_SIZE * Y);
         }
     }
 }

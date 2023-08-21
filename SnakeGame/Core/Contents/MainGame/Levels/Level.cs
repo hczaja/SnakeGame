@@ -24,9 +24,6 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
 
         private SnakeObject Player { get; set; }
 
-        private int LastPlayerX { get; set; } = -1;
-        private int LastPlayerY { get; set; } = -1;
-
         private readonly IGameState _state;
 
         public Level(string name, int n, int m, IGameState state)
@@ -66,14 +63,7 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
         public void Update()
         {
             this.Player.Update();
-            
-            if (LastPlayerX != Player.X || LastPlayerY != Player.Y)
-            {
-                LastPlayerX = Player.X;
-                LastPlayerY = Player.Y;
-
-                CheckCollisions();
-            }
+            CheckCollisions();
         }
 
         private void CheckCollisions()
@@ -84,14 +74,18 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
                 if (obj is AppleObject)
                 {
                     Cells[Player.X, Player.Y].Fill(EmptyObject.Instance);
-                    Player.Elongate();
+                    Player.Elongates();
 
                     if (CheckVictoryConditions())
                     {
                         _state.Handle(new ChangeContentEvent(ChangeContentEventType.LevelSummary));
                     }
                 }
-                if (obj is WallObject || Player.EatsOwnTail())
+                else if (obj is PortalObject portal)
+                {
+                    Player.EntersPortal(portal.DestinationX, portal.DestinationY);
+                }
+                else if (obj is WallObject || Player.EatsOwnTail())
                 {
                     _state.Handle(new ChangeContentEvent(ChangeContentEventType.LevelSummary));
                 }

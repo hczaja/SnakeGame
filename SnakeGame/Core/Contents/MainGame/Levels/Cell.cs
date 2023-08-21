@@ -11,8 +11,7 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
 {
     internal class Cell : IDrawable
     {
-        public static readonly float _CellWidth = 32f;
-        public static readonly float _CellHeight = 32f;
+        public static readonly float CELL_SIZE = 24f;
 
         private int X { get; }
         private int Y { get; }

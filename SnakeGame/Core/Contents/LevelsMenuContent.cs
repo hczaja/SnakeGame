@@ -13,96 +13,108 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Core.Contents
 {
+    internal record LevelPointer : IDrawable
+    {
+        public RectangleShape Shape { get; }
+        public int LevelId { get; private set; } = 0;
+
+        private readonly Vector2f[] _positions = new[]
+        {
+            new Vector2f(134f, 386f),
+            new Vector2f(142f, 337f),
+            new Vector2f(188f, 316f),
+            new Vector2f(198f, 264f)
+        };
+
+        public LevelPointer()
+        {
+            Shape = new RectangleShape()
+            {
+                Position = _positions[LevelId],
+                Size = new Vector2f(4f, 4f),
+                FillColor = Color.Red
+            };
+        }
+
+        public void MoveForward()
+        {
+            LevelId++;
+
+            if (LevelId > _positions.Length - 1)
+                LevelId = _positions.Length - 1;
+
+            Shape.Position = _positions[LevelId];
+        }
+
+        public void MoveBackward()
+        {
+            LevelId--;
+
+            if (LevelId < 0)
+                LevelId = 0;
+
+            Shape.Position = _positions[LevelId];
+        }
+
+
+        public void Draw(RenderTarget render)
+        {
+            render.Draw(Shape);
+        }
+    }
+
     internal class LevelsMenuContent : IContent
     {
         private readonly IGameState _state;
 
-        private readonly List<Button> _buttons;
-        private int _currentButtonIndex;
+        private RectangleShape _background;
+        private LevelPointer Pointer { get; }
 
         public LevelsMenuContent(IGameState state)
         {
             _state = state;
 
-            this._buttons = new List<Button>();
+            var settings = _state.GetSettings();
+            _background = new RectangleShape()
+            { 
+                Position = new(0f, 0f),
+                Size = new(settings.WindowWidth, settings.WindowHeight),
+                Texture = new Texture("Assets/levels_background.png")
+            };
 
-            Vector2f size = new(64f, 32f);
-
-            var level1 = new Button(size, new(32f, 32f),
-                new Texture("Assets/Level_1_0.png"),
-                new Texture("Assets/Level_1_1.png"));
-            this._buttons.Add(level1);
-
-            var level2 = new Button(
-                size,
-                level1.GetPosition() + new Vector2f(0f, level1.GetSize().Y + 16f),
-                new Texture("Assets/Level_2_0.png"),
-                new Texture("Assets/Level_2_1.png"));
-            this._buttons.Add(level2);
-            
-            var level3 = new Button(
-                size,
-                level2.GetPosition() + new Vector2f(0f, level2.GetSize().Y + 16f),
-                new Texture("Assets/Level_3_0.png"),
-                new Texture("Assets/Level_3_1.png"));
-            this._buttons.Add(level3);
-
-            var exitButton = new Button(
-                size,
-                level3.GetPosition() + new Vector2f(0f, level3.GetSize().Y + 16f),
-                new Texture("Assets/Exit_0.png"),
-                new Texture("Assets/Exit_1.png"));
-            this._buttons.Add(exitButton);
-
-            this._currentButtonIndex = 0;
-            this._buttons[this._currentButtonIndex].Cover();
+            Pointer = new LevelPointer();
         }
 
         public void Draw(RenderTarget render)
         {
-            foreach (var button in _buttons)
-            {
-                button.Draw(render);
-            }
+            render.Draw(_background);
+            Pointer.Draw(render);
         }
 
         public void Handle(KeyboardEvent @event)
         {
             if (@event.Type == KeyboardEventType.Press)
             {
-                if (@event.Key == Keyboard.Key.Up)
+                if (@event.Key == Keyboard.Key.Right)
                 {
-                    this._currentButtonIndex--;
-
-                    if (this._currentButtonIndex < 0)
-                        this._currentButtonIndex = this._buttons.Count - 1;
-
-                    this._currentButtonIndex %= _buttons.Count;
+                    this.Pointer.MoveForward();
                 }
-                else if (@event.Key == Keyboard.Key.Down)
+                else if (@event.Key == Keyboard.Key.Left)
                 {
-                    this._currentButtonIndex++;
-                    this._currentButtonIndex %= _buttons.Count;
+                    this.Pointer.MoveBackward();
                 }
                 else if (@event.Key == Keyboard.Key.Enter)
                 {
                     _state.Handle(
                         new ChangeContentEvent(
-                            this._currentButtonIndex == this._buttons.Count - 1
-                                ? ChangeContentEventType.MainMenu
-                                : ChangeContentEventType.Game));
+                            ChangeContentEventType.Game));
                 }
-
-                foreach (var button in _buttons)
-                    button.Uncover();
-
-                _buttons[this._currentButtonIndex].Cover();
             }
         }
 
         public void Update() { }
 
-        public string GetLevelId() => (this._currentButtonIndex + 1).ToString();
+        public string GetLevelId() => (this.Pointer.LevelId + 1).ToString();
 
         public object GetAdditionalData() => throw new NotImplementedException();
     }

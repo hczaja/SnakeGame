@@ -35,7 +35,7 @@ namespace Engine.Core
             _game.Close += (_, _) => Close();
         }
 
-        internal void Clear() => _window.Clear(Color.Black);
+        internal void Clear() => _window.Clear(Color.White);
 
         internal void DispatchEvents() => _window.DispatchEvents();
 

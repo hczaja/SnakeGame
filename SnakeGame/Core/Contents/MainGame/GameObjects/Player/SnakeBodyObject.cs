@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnakeGame.Core.Contents.MainGame.GameObjects
+namespace SnakeGame.Core.Contents.MainGame.GameObjects.Player
 {
     internal class SnakeBodyObject : IGameObject
     {
@@ -20,10 +20,10 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
 
         public SnakeBodyObject(int x, int y)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
 
-            this.Rectangle = new RectangleShape()
+            Rectangle = new RectangleShape()
             {
                 Size = new(Cell.CELL_SIZE, Cell.CELL_SIZE),
                 Position = new(x * Cell.CELL_SIZE, y * Cell.CELL_SIZE),
@@ -38,15 +38,15 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
 
         public void Update()
         {
-            this.Rectangle.Position = new(
-                Cell.CELL_SIZE * this.X,
-                Cell.CELL_SIZE * this.Y);
+            Rectangle.Position = new(
+                Cell.CELL_SIZE * X,
+                Cell.CELL_SIZE * Y);
         }
 
         internal void Move(int x, int y)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
         }
     }
 }

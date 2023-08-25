@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets\*.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Assets\**\*.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Assets\Levels\*.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

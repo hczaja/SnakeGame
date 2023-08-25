@@ -3,6 +3,7 @@ using Engine.Events;
 using Engine.Graphics;
 using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.GameObjects;
+using SnakeGame.Core.Contents.MainGame.GameObjects.Player;
 using SnakeGame.Core.Events;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
     {
         public string Name { get; }
 
+        private readonly int _maxCells;
+
         private int N { get; }
         private int M { get; }
 
@@ -29,6 +32,9 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
         public Level(string name, int n, int m, IGameState state)
         {
             _state = state;
+
+            //var settings = stas
+            //_maxCells = 
 
             Name = name;
             N = n;
@@ -71,15 +77,28 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
             var obj = Cells[Player.X, Player.Y].GameObject;
             if (obj is not null)
             {
-                if (obj is AppleObject)
+                if (obj is AppleObject apple)
                 {
                     Cells[Player.X, Player.Y].Fill(EmptyObject.Instance);
-                    Player.Elongates();
 
-                    if (CheckVictoryConditions())
+                    if (apple.IsRed())
                     {
-                        _state.Handle(new ChangeContentEvent(ChangeContentEventType.LevelSummary));
+                        Player.Elongates();
+
+                        if (CheckVictoryConditions())
+                        {
+                            _state.Handle(new ChangeContentEvent(ChangeContentEventType.LevelSummary));
+                        }
                     }
+                    else if (apple.IsYellow())
+                    {
+                        Player.ChargeEnergy();
+                    }
+                    else if (apple.IsGreen())
+                    {
+
+                    }
+
                 }
                 else if (obj is PortalObject portal)
                 {

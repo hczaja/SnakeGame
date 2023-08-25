@@ -1,4 +1,6 @@
 ﻿using SnakeGame.Core.Contents.MainGame.GameObjects;
+using SnakeGame.Core.Contents.MainGame.GameObjects.Enemies;
+using SnakeGame.Core.Contents.MainGame.GameObjects.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,8 +76,8 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
                         SNAKE => new SnakeObject(j, i),
                         APPLE => new AppleObject(j, i),
                         EMPTY => EmptyObject.Instance,
-                        RED_PORTAL_START => new PortalObject(j, i, PortalType.Red),
-                        RED_PORTAL_END => new PortalObject(j, i, PortalType.Red),
+                        RED_PORTAL_START => new SpiderEnemyObject(j, i), /*new PortalObject(j, i, PortalType.Red)*/
+                        //RED_PORTAL_END => new PortalObject(j, i, PortalType.Red),
                         BLUE_PORTAL_START => new PortalObject(j, i, PortalType.Blue),
                         BLUE_PORTAL_END => new PortalObject(j, i, PortalType.Blue),
                         _ => EmptyObject.Instance

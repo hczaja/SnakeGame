@@ -11,7 +11,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnakeGame.Core.Contents.MainGame.GameObjects
+namespace SnakeGame.Core.Contents.MainGame.GameObjects.Player
 {
     internal class SnakeObject : IGameObject
     {
@@ -19,6 +19,11 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
         private readonly List<SnakeBodyObject> _body;
 
         private readonly GameStopwatch _stopwatch;
+
+        private static readonly float MAX_ENERGY = 1f;
+        private static readonly float ENERGY_CONSUMPTION = 0.005f;
+        private static readonly float ENERGY_CHARGE = 0.5f;
+        private float CurrentEnergy { get; set; } = MAX_ENERGY;
 
         private static readonly float REGULAR_SPEED = 1f;
         private static readonly float ACCELERATION = 0.05f;
@@ -30,26 +35,26 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
 
         public SnakeObject(int x, int y)
         {
-            this._head = new SnakeHeadObject(x, y);
+            _head = new SnakeHeadObject(x, y);
 
-            this._body = new List<SnakeBodyObject>();
+            _body = new List<SnakeBodyObject>();
             var part = new SnakeBodyObject(x, y + 1);
-            this._body.Add(part);
+            _body.Add(part);
 
             _stopwatch = new GameStopwatch(BaseSpeed);
         }
 
-        public int X => this._head.X;
-        public int Y => this._head.Y;
+        public int X => _head.X;
+        public int Y => _head.Y;
 
-        public int Length => this._body.Count - 1;
+        public int Length => _body.Count - 1;
 
         public bool IsInPortal { get; private set; }
 
         public void Draw(RenderTarget render)
         {
-            this._head.Draw(render);
-            foreach (var body in this._body) { body.Draw(render); }
+            _head.Draw(render);
+            foreach (var body in _body) { body.Draw(render); }
         }
 
         public void Handle(KeyboardEvent @event)
@@ -112,7 +117,7 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
             _body[0].Move(_head.X, _head.Y);
             _body[0].Update();
 
-            this._head.Update();
+            _head.Update();
         }
 
         private void UpdateSpeed()
@@ -122,7 +127,15 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
                 if (CurrentSpeed > MAX_SPEED)
                     CurrentSpeed -= ACCELERATION;
 
-                _stopwatch.ChangeTimer(CurrentSpeed);
+                if (CurrentEnergy > 0)
+                {
+                    CurrentEnergy -= ENERGY_CONSUMPTION;
+                    _stopwatch.ChangeTimer(CurrentSpeed);
+                }
+                else
+                {
+                    SlowDown();
+                }
             }
             else
             {
@@ -134,7 +147,7 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
             }
         }
 
-        internal void Elongates() => this._body.Add(new SnakeBodyObject(-1, -1));
+        internal void Elongates() => _body.Add(new SnakeBodyObject(-1, -1));
 
         internal bool EatsOwnTail() => _body.ToList().Any(b => X == b.X && Y == b.Y);
 
@@ -148,5 +161,13 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
             else
                 IsInPortal = false;
         }
+
+        internal void ChargeEnergy()
+        {
+            CurrentEnergy += ENERGY_CHARGE;
+
+            if (CurrentEnergy > MAX_ENERGY)
+                CurrentEnergy = MAX_ENERGY;
+        } 
     }
 }

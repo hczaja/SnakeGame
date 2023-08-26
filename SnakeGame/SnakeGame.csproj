@@ -16,13 +16,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Assets\**\*.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\Levels\*.txt">
+    <None Update="Assets\**\*.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  <None Update="Assets\*.ttf">
+    <None Update="Assets\**\*.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\*.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

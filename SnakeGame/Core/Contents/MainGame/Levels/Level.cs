@@ -3,6 +3,7 @@ using Engine.Events;
 using Engine.Graphics;
 using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.GameObjects;
+using SnakeGame.Core.Contents.MainGame.GameObjects.Walls;
 using SnakeGame.Core.Contents.MainGame.GameObjects.Player;
 using SnakeGame.Core.Events;
 using System;
@@ -19,6 +20,7 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
         public string Name { get; }
 
         private readonly int _maxCells;
+        private readonly RectangleShape _background;
 
         private int N { get; }
         private int M { get; }
@@ -33,8 +35,15 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
         {
             _state = state;
 
-            //var settings = stas
-            //_maxCells = 
+            var settings = state.GetSettings();
+            _maxCells = (int)settings.WindowHeight / (int)Cell.CELL_SIZE;
+
+            _background = new RectangleShape()
+            {
+                Size = new (_maxCells * Cell.CELL_SIZE, _maxCells * Cell.CELL_SIZE),
+                Texture = new Texture("Assets/Levels/01_01.png")
+            };
+
 
             Name = name;
             N = n;
@@ -60,6 +69,8 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
 
         public void Draw(RenderTarget render)
         {
+            render.Draw(_background);
+
             foreach (var cell in Cells) 
             { 
                 cell.Draw(render);

@@ -16,5 +16,8 @@ namespace Engine.Core
         int FPS { get; }
         bool EnableKeyRepeat { get; }
         Font Font { get; }
+        Color Theme { get; }
+        uint FontSizeBig { get; }
+        uint FontSizeSmall { get; }
     }
 }

@@ -13,6 +13,8 @@ namespace Engine.Core
         private readonly RenderWindow _window;
         private readonly IGame _game;
 
+        private readonly Color _theme;
+
         public GameWindow(IGame game, IGameSettings settings)
         {
             this._window = new RenderWindow(
@@ -20,6 +22,8 @@ namespace Engine.Core
                     settings.WindowWidth,
                     settings.WindowHeight),
                 settings.GameTitle);
+
+            _theme = settings.Theme;
 
             this._window.SetKeyRepeatEnabled(enable: settings.EnableKeyRepeat);
 
@@ -35,7 +39,7 @@ namespace Engine.Core
             _game.Close += (_, _) => Close();
         }
 
-        internal void Clear() => _window.Clear(Color.White);
+        internal void Clear() => _window.Clear(_theme);
 
         internal void DispatchEvents() => _window.DispatchEvents();
 

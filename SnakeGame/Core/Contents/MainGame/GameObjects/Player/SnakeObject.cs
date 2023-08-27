@@ -22,8 +22,8 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Player
 
         private static readonly float MAX_ENERGY = 1f;
         private static readonly float ENERGY_CONSUMPTION = 0.005f;
-        private static readonly float ENERGY_CHARGE = 0.5f;
-        private float CurrentEnergy { get; set; } = MAX_ENERGY;
+        public static readonly float ENERGY_CHARGE = 0.5f;
+        public float CurrentEnergy { get; private set; } = MAX_ENERGY;
 
         private static readonly float REGULAR_SPEED = 1f;
         private static readonly float ACCELERATION = 0.05f;

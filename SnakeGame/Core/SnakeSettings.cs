@@ -18,5 +18,9 @@ namespace SnakeGame
         public bool EnableKeyRepeat => false;
 
         public Font Font => new Font("Assets/rainyhearts.ttf");
+        public Color Theme => new Color(24, 9, 20);
+
+        public uint FontSizeBig => 24;
+        public uint FontSizeSmall => 16;
     }
 }

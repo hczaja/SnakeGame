@@ -20,6 +20,9 @@
   "Fountains": [
     { "X": 16, "Y": 23 }
   ],
+  "Keys": [
+    { "X": 16, "Y": 8, "Type": "Bronze" }
+  ],
   "Enemies" : [
 
   ]

@@ -65,6 +65,19 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
                 result.FillCell(apple.X, apple.Y, new AppleObject(apple.X, apple.Y, type));
             }
 
+            foreach (var key in dto.Keys)
+            {
+                var type = key.Type switch
+                {
+                    "Bronze" => KeyType.Bronze,
+                    "Silver" => KeyType.Silver,
+                    "Gold" => KeyType.Gold,
+                    _ => KeyType.Bronze
+                };
+
+                result.FillCell(key.X, key.Y, new KeyObject(key.X, key.Y, type));
+            }
+
             foreach (var door in dto.Doors)
             {
                 result.FillCell(door.X, door.Y, new DoorObject(door.X, door.Y));

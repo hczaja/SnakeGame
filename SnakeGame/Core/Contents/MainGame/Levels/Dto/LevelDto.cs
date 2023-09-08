@@ -14,6 +14,7 @@ namespace SnakeGame.Core.Contents.MainGame.Levels.Dto
         public required WallDto[] Walls { get; set; }
         public required DoorDto[] Doors { get; set; }
         public required AppleDto[] Apples { get; set; }
+        public required KeyDto[] Keys { get; set; }
         public required FountainDto[] Fountains { get; set; }
         public EnemyDto[]? Enemies { get; set; }
     }
@@ -31,6 +32,13 @@ namespace SnakeGame.Core.Contents.MainGame.Levels.Dto
     }
 
     public class AppleDto
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public required string Type { get; set; }
+    }
+    
+    public class KeyDto
     {
         public int X { get; set; }
         public int Y { get; set; }

@@ -27,10 +27,10 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Player
 
         private static readonly float REGULAR_SPEED = 1f;
         private static readonly float ACCELERATION = 0.05f;
-        private static readonly float MAX_SPEED = 0.25f;
+        public static readonly float MAX_SPEED = 0.25f;
 
         private float BaseSpeed { get; set; } = REGULAR_SPEED;
-        private float CurrentSpeed { get; set; } = REGULAR_SPEED;
+        public float CurrentSpeed { get; private set; } = REGULAR_SPEED;
         private bool Accelerate { get; set; } = false;
 
         public SnakeObject(int x, int y)

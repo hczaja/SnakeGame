@@ -15,87 +15,6 @@ using Engine.Time;
 
 namespace SnakeGame.Core.Contents.MainGame.Levels
 {
-    internal class LevelSideBar : IDrawable
-    {
-        private readonly RectangleShape _shape;
-
-        private static readonly float OFFSET_PX = 4f;
-
-        private readonly Text _levelName;
-
-        private readonly GameTimer _timer;
-        private readonly Text _timerText;
-
-        private static readonly float ENERGY_BAR_MAX = 236f;
-        private readonly RectangleShape _energyBar;
-        private readonly Text _energyText;
-
-        private float EnergyValue { get; set; } = 1f;
-
-        public LevelSideBar(IGameSettings settings) 
-        {
-            _shape = new RectangleShape()
-            {
-                Size = new(settings.WindowWidth - settings.WindowHeight, settings.WindowHeight),
-                Position = new(settings.WindowHeight, 0f),
-                Texture = new Texture("Assets/GUI/sidebar.png")
-            };
-
-            _levelName = new Text("01-01 : Training", settings.Font, settings.FontSizeBig)
-            {
-                Position = new (_shape.Position.X + 3 * OFFSET_PX, 3 * OFFSET_PX)
-            };
-            
-            _timer = new GameTimer();
-            _timerText = new Text("00:000", settings.Font, settings.FontSizeSmall)
-            {
-                Position = new (_shape.Position.X + 3 * OFFSET_PX, 12 * OFFSET_PX)
-            };
-
-            _energyBar = new RectangleShape()
-            {
-                Size = new(ENERGY_BAR_MAX, 35),
-                Position = new(settings.WindowHeight + 10, 218),
-                FillColor = new Color(217, 160, 102)
-            };
-            _energyText = new Text("100%", settings.Font, settings.FontSizeBig)
-            {
-                Position = new (
-                    _energyBar.Position.X + 3 * OFFSET_PX,
-                    _energyBar.Position.Y + OFFSET_PX),
-                FillColor = settings.Theme
-            };
-        }
-
-        public void Draw(RenderTarget render)
-        {
-            render.Draw(_energyBar);
-            render.Draw(_shape);
-            render.Draw(_levelName);
-            render.Draw(_timerText);
-            render.Draw(_energyText);
-        }
-
-        public void Update()
-        {
-            _timer.Update();
-
-            _timerText.DisplayedString = $"{_timer.RealTime.ToString("0.000")}s";
-
-            _energyBar.Size = new(ENERGY_BAR_MAX * EnergyValue, _energyBar.Size.Y);
-            _energyText.DisplayedString = $"{(EnergyValue * 100).ToString("00")}%";
-        }
-
-        public void SetEnergy(float energy)
-        {
-            EnergyValue = energy;
-            if (EnergyValue < 0)
-                EnergyValue = 0;
-            if (EnergyValue > 1f)
-                EnergyValue = 1f;
-        }
-    }
-
     internal class Level : 
         IDrawable, IUpdatable, IEventHandler<KeyboardEvent>
     {
@@ -104,7 +23,7 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
         private readonly int _maxCells;
 
         private readonly RectangleShape _background;
-        private readonly LevelSideBar _sidebar;
+        private readonly Sidebar _sidebar;
 
         private int N { get; }
         private int M { get; }
@@ -121,7 +40,7 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
 
             var settings = state.GetSettings();
 
-            _sidebar = new LevelSideBar(settings);
+            _sidebar = new Sidebar(settings);
             _maxCells = (int)settings.WindowHeight / (int)Cell.CELL_SIZE;
 
             _background = new RectangleShape()
@@ -169,6 +88,7 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
 
             this.Player.Update();
             _sidebar.SetEnergy(this.Player.CurrentEnergy);
+            _sidebar.SetSpeed(this.Player.CurrentSpeed);
 
             CheckCollisions();
         }

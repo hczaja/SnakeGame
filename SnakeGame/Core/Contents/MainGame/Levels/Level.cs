@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Engine.Time;
+using SnakeGame.Core.Contents.MainGame.GameObjects.Interactive;
 
 namespace SnakeGame.Core.Contents.MainGame.Levels
 {

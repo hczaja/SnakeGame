@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnakeGame.Core.Contents.MainGame.GameObjects
+namespace SnakeGame.Core.Contents.MainGame.GameObjects.Interactive
 {
     internal enum PortalType
     {
@@ -27,12 +27,12 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
 
         public PortalObject(int x, int y, PortalType type)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
 
-            this.Type = type;
+            Type = type;
 
-            this.Rectangle = new RectangleShape()
+            Rectangle = new RectangleShape()
             {
                 Size = new(Cell.CELL_SIZE, Cell.CELL_SIZE),
                 Position = new(x * Cell.CELL_SIZE, y * Cell.CELL_SIZE),
@@ -52,8 +52,8 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects
 
         internal void SetDestination(PortalObject end)
         {
-            this.DestinationX = end.X;
-            this.DestinationY = end.Y;
+            DestinationX = end.X;
+            DestinationY = end.Y;
         }
     }
 }

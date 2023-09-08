@@ -1,4 +1,4 @@
-﻿using SnakeGame.Core.Contents.MainGame.GameObjects;
+﻿using SnakeGame.Core.Contents.MainGame.GameObjects.Interactive;
 using SnakeGame.Core.Contents.MainGame.GameObjects.Player;
 using SnakeGame.Core.Contents.MainGame.GameObjects.Walls;
 using SnakeGame.Core.Contents.MainGame.Levels.Dto;

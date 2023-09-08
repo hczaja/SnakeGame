@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnakeGame.Core.Contents.MainGame.GameObjects
+namespace SnakeGame.Core.Contents.MainGame.GameObjects.Interactive
 {
     internal enum AppleType
     {

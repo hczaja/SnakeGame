@@ -1,6 +1,7 @@
 ﻿using Engine.Graphics;
 using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.GameObjects;
+using SnakeGame.Core.Contents.MainGame.GameObjects.Interactive;
 using System;
 using System.Collections.Generic;
 using System.Linq;

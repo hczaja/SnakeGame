@@ -22,5 +22,6 @@ namespace SnakeGame
 
         public uint FontSizeBig => 24;
         public uint FontSizeSmall => 16;
+
     }
 }

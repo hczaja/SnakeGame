@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Engine.Time;
 using SnakeGame.Core.Contents.MainGame.GameObjects.Interactive;
+using System.Reflection;
 
 namespace SnakeGame.Core.Contents.MainGame.Levels
 {
@@ -90,6 +91,11 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
             this.Player.Update();
             _sidebar.SetEnergy(this.Player.CurrentEnergy);
             _sidebar.SetSpeed(this.Player.CurrentSpeed);
+
+            foreach (var cell in Cells)
+            {
+                cell.Update();
+            }
 
             CheckCollisions();
         }

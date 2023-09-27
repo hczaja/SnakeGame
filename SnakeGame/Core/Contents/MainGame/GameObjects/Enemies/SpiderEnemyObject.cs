@@ -1,4 +1,5 @@
 ﻿using Engine.Graphics;
+using Engine.Random;
 using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.Levels;
 using System;
@@ -14,9 +15,11 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Enemies
         private static readonly float ActionTime = 1f;
 
         private Dictionary<string, Animation> Animations;
-        private static string IDDLE_ANIMATION = "Iddle";
 
-        protected override Animation CurrentAnimation { get; }
+        private static string IDDLE_ANIMATION = "Iddle";
+        private static string MOVE_ANIMATION = "Move";
+
+        protected override Animation CurrentAnimation { get; set; }
 
         public SpiderEnemyObject(int x, int y)
             : base(x, y, ActionTime)
@@ -29,6 +32,12 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Enemies
                         (int)Cell.CELL_SIZE, () => GetPosition(),
                         2, 0.5f, isLooped: true)
                 },
+                {
+                    MOVE_ANIMATION, new Animation(
+                        new Texture("Assets/Spritesheets/Spritesheet_Spider_Iddle.png"),
+                        (int)Cell.CELL_SIZE, () => GetPosition(),
+                        2, 0.5f, isLooped: true)
+                }
             };
 
             CurrentAnimation = Animations[IDDLE_ANIMATION];
@@ -37,7 +46,25 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Enemies
 
         protected override void DoSomething()
         {
+            int number = Dice.Instance.Roll6k();
+            if (number >= 3)
+                Move();
+            else
+                Iddle();
+        }
 
+        private void Move()
+        {
+            CurrentAnimation = Animations[MOVE_ANIMATION];
+            CurrentAnimation.Start();
+
+            this.X += 1;
+        }
+
+        private void Iddle()
+        {
+            CurrentAnimation = Animations[IDDLE_ANIMATION];
+            CurrentAnimation.Start();
         }
     }
 

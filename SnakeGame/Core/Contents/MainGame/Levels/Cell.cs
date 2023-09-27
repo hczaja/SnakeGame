@@ -1,4 +1,5 @@
-﻿using Engine.Graphics;
+﻿using Engine.Core;
+using Engine.Graphics;
 using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.GameObjects;
 using SnakeGame.Core.Contents.MainGame.GameObjects.Interactive;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Core.Contents.MainGame.Levels
 {
-    internal class Cell : IDrawable
+    internal class Cell : IDrawable, IUpdatable
     {
         public static readonly float CELL_SIZE = 24f;
 
@@ -29,12 +30,17 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
             if (IsEmpty()) return;
             GameObject.Draw(render);
         }
-
         internal void Fill(IGameObject gameObject)
         {
             this.GameObject = gameObject;
         }
 
         internal bool HasApple() => !IsEmpty() && this.GameObject is AppleObject;
+
+        public void Update()
+        {
+            if (IsEmpty()) return;
+            GameObject.Update();
+        }
     }
 }

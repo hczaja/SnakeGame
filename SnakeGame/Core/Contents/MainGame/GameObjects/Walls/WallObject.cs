@@ -27,7 +27,7 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Walls
 
         public void Draw(RenderTarget render)
         {
-            render.Draw(Shape);
+            //render.Draw(Shape);
         }
 
         public void Update()

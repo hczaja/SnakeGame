@@ -15,10 +15,10 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Enemies
     {
         private readonly GameStopwatch _stopwatch;
 
-        public int X { get; private set; }
-        public int Y { get; private set; }
+        public int X { get; protected set; }
+        public int Y { get; protected set; }
 
-        protected abstract Animation CurrentAnimation { get; }
+        protected abstract Animation CurrentAnimation { get; set; }
 
         public EnemyObject(int x, int y, float actionTime)
         {

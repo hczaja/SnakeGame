@@ -75,7 +75,16 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
                 result.FillCell(fountain.X, fountain.Y, new FountainObject(fountain.X, fountain.Y));
             }
 
-            result.FillCell(25, 25, new SpiderEnemyObject(25, 25));
+            foreach (var enemy in dto.Enemies)
+            {
+                var obj = enemy.Type switch
+                {
+                    "BlackSpider" => new BlackSpiderEnemyObject(enemy.X, enemy.Y),
+                    _ => new BlackSpiderEnemyObject(enemy.X, enemy.Y)
+                };
+
+                result.FillCell(enemy.X, enemy.Y, obj);
+            }
 
             return result;
         }

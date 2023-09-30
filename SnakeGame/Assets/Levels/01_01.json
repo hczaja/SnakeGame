@@ -88,6 +88,6 @@
     { "X": 16, "Y": 8, "Type": "Bronze" }
   ],
   "Enemies" : [
-
+    { "X": 16, "Y": 14, "Type": "BlackSpider" }
   ]
 }

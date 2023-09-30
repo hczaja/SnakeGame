@@ -1,6 +1,7 @@
 ﻿using Engine.Graphics;
 using Engine.Random;
 using SFML.Graphics;
+using SnakeGame.Core.Contents.MainGame.GameObjects.Other;
 using SnakeGame.Core.Contents.MainGame.Levels;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Core.Contents.MainGame.GameObjects.Enemies
 {
-    internal class SpiderEnemyObject : EnemyObject
+    internal class BlackSpiderEnemyObject : EnemyObject
     {
-        private static readonly float ActionTime = 1f;
+        private static readonly float ActionTime = 2.5f;
 
         private Dictionary<string, Animation> Animations;
 
@@ -21,7 +22,7 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Enemies
 
         protected override Animation CurrentAnimation { get; set; }
 
-        public SpiderEnemyObject(int x, int y)
+        public BlackSpiderEnemyObject(int x, int y)
             : base(x, y, ActionTime)
         {
             Animations = new()

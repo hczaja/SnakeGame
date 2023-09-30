@@ -2,6 +2,7 @@
 using Engine.Time;
 using SFML.Graphics;
 using SFML.System;
+using SnakeGame.Core.Contents.MainGame.GameObjects.Other;
 using SnakeGame.Core.Contents.MainGame.Levels;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Enemies
         public int X { get; protected set; }
         public int Y { get; protected set; }
 
+        protected HealthObject Health { get; set; }
+
         protected abstract Animation CurrentAnimation { get; set; }
 
         public EnemyObject(int x, int y, float actionTime)
@@ -25,12 +28,15 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Enemies
             X = x;
             Y = y;
 
+            Health = new HealthObject(this);
+
             _stopwatch = new GameStopwatch(actionTime);
         }
 
         public void Draw(RenderTarget render)
         {
             CurrentAnimation.Draw(render);
+            Health.Draw(render);
         }
 
         public void Update()

@@ -9,9 +9,9 @@ using Engine.Time;
 using SFML.Graphics;
 using SFML.System;
 using SnakeGame;
-using SnakeGame.Core.Contents.MainGame.Levels;
 using Snakeventures.Components;
 using Snakeventures.Exceptions;
+using Snakeventures.Levels;
 using System.Linq;
 
 namespace Snakeventures.Actors;

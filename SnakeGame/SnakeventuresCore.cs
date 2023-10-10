@@ -4,7 +4,7 @@ using Engine.GameState;
 using Engine.Settings;
 using SFML.Graphics;
 using SFML.Window;
-using SnakeGame;
+using Snakeventures.GameStates;
 
 namespace Snakeventures;
 

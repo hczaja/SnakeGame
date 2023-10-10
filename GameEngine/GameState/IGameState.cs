@@ -10,7 +10,8 @@ namespace Engine.GameState;
 public interface IGameState :
     IDrawable,
     IUpdatable,
-    IEventHandler<KeyboardEvent>
+    IEventHandler<KeyboardEvent>,
+    IEventHandler<ChangeContentEvent>
 {
     IGameComponent GetCamera();
     IGameComponent GetCollider();

@@ -1,4 +1,5 @@
-﻿using Engine.Graphics;
+﻿using Engine.GameObjects;
+using Engine.Graphics;
 using SFML.Graphics;
 using SFML.Window;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Core
 {
-    public interface IGame : IDrawable, IUpdatable
+    public interface IGameCore : IDrawable, IUpdatable
     {
         void _window_MouseMoved(object? sender, EventArgs e);
         void _window_KeyPressed(object? sender, KeyEventArgs e);

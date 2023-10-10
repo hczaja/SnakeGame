@@ -1,18 +1,15 @@
-﻿using Engine.Graphics;
+﻿using Engine.Actors;
+using Engine.Events;
+using Engine.Graphics;
 using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.Levels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SnakeGame.Core.Contents.MainGame.GameObjects.Walls
 {
-    internal class FountainObject : IGameObject
+    internal class FountainObject : GameActor
     {
-        public int X { get; private set; }
-        public int Y { get; private set; }
+        public override int X { get; protected set; }
+        public override int Y { get; protected set; }
 
         private readonly Animation Iddle;
 
@@ -30,14 +27,24 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Walls
             this.Iddle.Start();
         }
 
-        public void Draw(RenderTarget render)
+        public override void DrawBy(RenderTarget render)
         {
-            Iddle.Draw(render);
+            Iddle.DrawBy(render);
         }
 
-        public void Update()
+        public override void Update()
         {
 
+        }
+
+        public override void CheckCollisions()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Handle(KeyboardEvent @event)
+        {
+            throw new NotImplementedException();
         }
     }
 }

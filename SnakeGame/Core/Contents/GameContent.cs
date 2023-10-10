@@ -1,64 +1,57 @@
 ﻿using Engine.Events;
+using Engine.GameState;
 using Engine.Graphics;
-using Engine.Time;
 using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame;
-using SnakeGame.Core.Contents.MainGame.GameObjects;
 using SnakeGame.Core.Contents.MainGame.Levels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SnakeGame.Core.Contents
+namespace SnakeGame.Core.Contents;
+
+internal class GameContent : IGameContent
 {
-    internal class GameContent : IContent
+    private readonly IGameState _state;
+
+    private readonly Level _level;
+    private readonly Score _score;
+
+    private readonly string _levelId;
+
+    public GameContent(IGameState state, string levelId)
     {
-        private readonly IGameState _state;
+        _state = state;
+        _levelId = levelId;
 
-        private readonly Level _level;
-        private readonly Score _score;
+        var loader = new LevelLoader();
+        _level = loader.Load($"Assets/Levels/Level{levelId}.txt", _state);
 
-        private readonly string _levelId;
+        _score = new Score(
+            _level.GetMaxApples(),
+            _level.Name,
+            _state.GetSettings());
+    }
 
-        public GameContent(IGameState state, string levelId)
-        {
-            _state = state;
-            _levelId = levelId;
+    public void DrawBy(RenderTarget render) 
+    {
+        _level.DrawBy(render);
+        _score.DrawBy(render);
+    }
 
-            var loader = new LevelLoader();
-            _level = loader.Load($"Assets/Levels/Level{levelId}.txt", _state);
+    public string GetLevelId() => _levelId;
 
-            _score = new Score(
-                _level.GetMaxApples(),
-                _level.Name,
-                _state.GetSettings());
-        }
+    public object GetAdditionalData()
+    {
+        _score.Update(_level);
+        return _score.GetFinalScore();
+    }
 
-        public void Draw(RenderTarget render) 
-        {
-            _level.Draw(render);
-            _score.Draw(render);
-        }
+    public void Handle(KeyboardEvent @event) 
+    {
+        _level.Handle(@event);
+    }
 
-        public string GetLevelId() => _levelId;
-
-        public object GetAdditionalData()
-        {
-            _score.Update(_level);
-            return _score.GetFinalScore();
-        }
-
-        public void Handle(KeyboardEvent @event) 
-        {
-            _level.Handle(@event);
-        }
-
-        public void Update() 
-        {
-            _level.Update();
-            _score.Update(_level);
-        }
+    public void Update() 
+    {
+        _level.Update();
+        _score.Update(_level);
     }
 }

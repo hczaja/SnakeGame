@@ -1,10 +1,7 @@
-﻿using SFML.Graphics;
+﻿using Engine.Actors;
+using Engine.Events;
+using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.Levels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SnakeGame.Core.Contents.MainGame.GameObjects.Interactive
 {
@@ -13,10 +10,10 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Interactive
         Bronze, Silver, Gold
     }
 
-    internal class KeyObject : IGameObject
+    internal class KeyObject : GameActor
     {
-        public int X { get; private set; }
-        public int Y { get; private set; }
+        public override int X { get; protected set; }
+        public override int Y { get; protected set; }
 
         private KeyType Type { get; }
 
@@ -49,11 +46,21 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Interactive
             _ => throw new NotImplementedException(),
         };
 
-        public void Draw(RenderTarget render)
+        public override void DrawBy(RenderTarget render)
         {
             render.Draw(Rectangle);
         }
 
-        public void Update() { }
+        public override void Update() { }
+
+        public override void CheckCollisions()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Handle(KeyboardEvent @event)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

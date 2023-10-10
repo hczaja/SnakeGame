@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Engine.Core
+namespace Engine.Levels;
+
+public interface IGameLevel
 {
-    public interface IUpdatable
-    {
-        void Update();
-    }
+
 }

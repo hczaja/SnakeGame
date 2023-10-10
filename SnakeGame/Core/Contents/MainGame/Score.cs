@@ -1,5 +1,5 @@
-﻿using Engine.Core;
-using Engine.Graphics;
+﻿using Engine.Graphics;
+using Engine.Settings;
 using Engine.Time;
 using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.Levels;
@@ -58,7 +58,7 @@ namespace SnakeGame.Core.Contents.MainGame
             Text.DisplayedString = GetScoreDescription();
         }
 
-        public void Draw(RenderTarget render)
+        public void DrawBy(RenderTarget render)
         {
             render.Draw(Text);
         }

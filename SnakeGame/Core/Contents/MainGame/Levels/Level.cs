@@ -1,178 +1,171 @@
-﻿using Engine.Core;
-using Engine.Events;
+﻿using Engine.Events;
 using Engine.Graphics;
 using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.GameObjects;
 using SnakeGame.Core.Contents.MainGame.GameObjects.Walls;
-using SnakeGame.Core.Contents.MainGame.GameObjects.Player;
-using SnakeGame.Core.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Engine.Time;
 using SnakeGame.Core.Contents.MainGame.GameObjects.Interactive;
-using System.Reflection;
+using Engine.GameObjects;
+using Engine.GameState;
+using Snakeventures.Actors;
+using Engine.Actors;
 
-namespace SnakeGame.Core.Contents.MainGame.Levels
+namespace SnakeGame.Core.Contents.MainGame.Levels;
+
+internal class Level : 
+    IDrawable, IUpdatable, IEventHandler<KeyboardEvent>
 {
-    internal class Level : 
-        IDrawable, IUpdatable, IEventHandler<KeyboardEvent>
+    public string Name { get; }
+
+    private readonly int _maxCells;
+
+    private readonly RectangleShape _background;
+    private readonly Sidebar _sidebar;
+
+    private int N { get; }
+    private int M { get; }
+
+    private Cell[,] Cells { get; }
+
+    private SnakeActor Player { get; set; }
+
+    private readonly IGameState _state;
+
+    public Level(string name, int n, int m, IGameState state)
     {
-        public string Name { get; }
+        _state = state;
 
-        private readonly int _maxCells;
+        var settings = state.GetSettings();
 
-        private readonly RectangleShape _background;
-        private readonly Sidebar _sidebar;
+        _sidebar = new Sidebar(settings);
+        _maxCells = (int)settings.WindowHeight / (int)Cell.CELL_SIZE;
 
-        private int N { get; }
-        private int M { get; }
-
-        private Cell[,] Cells { get; }
-
-        private SnakeObject Player { get; set; }
-
-        private readonly IGameState _state;
-
-        public Level(string name, int n, int m, IGameState state)
+        _background = new RectangleShape()
         {
-            _state = state;
+            Size = new (_maxCells * Cell.CELL_SIZE, _maxCells * Cell.CELL_SIZE),
+            Texture = new Texture("Assets/Levels/01_01.png")
+        };
 
-            var settings = state.GetSettings();
+        Name = name;
+        N = n;
+        M = m;
 
-            _sidebar = new Sidebar(settings);
-            _maxCells = (int)settings.WindowHeight / (int)Cell.CELL_SIZE;
+        Cells = new Cell[N, M];
 
-            _background = new RectangleShape()
+        for (int i = 0; i < N; i++) 
+        { 
+            for (int j = 0; j < M; j++)
             {
-                Size = new (_maxCells * Cell.CELL_SIZE, _maxCells * Cell.CELL_SIZE),
-                Texture = new Texture("Assets/Levels/01_01.png")
-            };
+                Cells[i, j] = new Cell(i, j);
+            }
+        }
+    }
 
-            Name = name;
-            N = n;
-            M = m;
+    public void FillCell(int n, int m, GameActor gameObject) 
+    {
+        this.Cells[n, m].Fill(gameObject);
+        if (gameObject is SnakeActor snake)
+            Player = snake;
+    }
 
-            Cells = new Cell[N, M];
+    public void DrawBy(RenderTarget render)
+    {
+        render.Draw(_background);
+        _sidebar.DrawBy(render);
 
-            for (int i = 0; i < N; i++) 
-            { 
-                for (int j = 0; j < M; j++)
+        foreach (var cell in Cells) 
+        { 
+            cell.DrawBy(render);
+        }
+    }
+
+    public void Update()
+    {
+        _sidebar.Update();
+
+        Player.Update();
+        _sidebar.SetEnergy(Player.CurrentEnergy);
+        _sidebar.SetSpeed(Player.CurrentSpeed);
+
+        foreach (var cell in Cells)
+        {
+            cell.Update();
+        }
+
+        CheckCollisions();
+    }
+
+    private void CheckCollisions()
+    {
+        var obj = Cells[Player.X, Player.Y].GameObject;
+        if (obj is not null)
+        {
+            if (obj is AppleObject apple)
+            {
+                Cells[Player.X, Player.Y].Fill(EmptyObject.Instance);
+
+                if (apple.IsRed())
                 {
-                    Cells[i, j] = new Cell(i, j);
-                }
-            }
-        }
+                    //Player.Elongates();
 
-        public void FillCell(int n, int m, IGameObject gameObject) 
-        {
-            this.Cells[n, m].Fill(gameObject);
-            if (gameObject is SnakeObject snake)
-                Player = snake;
-        }
-
-        public void Draw(RenderTarget render)
-        {
-            render.Draw(_background);
-            _sidebar.Draw(render);
-
-            foreach (var cell in Cells) 
-            { 
-                cell.Draw(render);
-            }
-        }
-
-        public void Update()
-        {
-            _sidebar.Update();
-
-            this.Player.Update();
-            _sidebar.SetEnergy(this.Player.CurrentEnergy);
-            _sidebar.SetSpeed(this.Player.CurrentSpeed);
-
-            foreach (var cell in Cells)
-            {
-                cell.Update();
-            }
-
-            CheckCollisions();
-        }
-
-        private void CheckCollisions()
-        {
-            var obj = Cells[Player.X, Player.Y].GameObject;
-            if (obj is not null)
-            {
-                if (obj is AppleObject apple)
-                {
-                    Cells[Player.X, Player.Y].Fill(EmptyObject.Instance);
-
-                    if (apple.IsRed())
+                    if (CheckVictoryConditions())
                     {
-                        Player.Elongates();
-
-                        if (CheckVictoryConditions())
-                        {
-                            _state.Handle(new ChangeContentEvent(ChangeContentEventType.LevelSummary));
-                        }
+                        //_state.Handle(new ChangeContentEvent(ChangeContentEventType.LevelSummary));
                     }
-                    else if (apple.IsYellow())
-                    {
-                        Player.ChargeEnergy();
-                    }
-                    else if (apple.IsGreen())
-                    {
-
-                    }
-
                 }
-                else if (obj is PortalObject portal)
+                else if (apple.IsYellow())
                 {
-                    Player.EntersPortal(portal.DestinationX, portal.DestinationY);
+                    //Player.ChargeEnergy();
                 }
-                else if (obj is WallObject || Player.EatsOwnTail())
+                else if (apple.IsGreen())
                 {
-                    _state.Handle(new ChangeContentEvent(ChangeContentEventType.LevelSummary));
+
                 }
+
             }
-        }
-
-        private bool CheckVictoryConditions()
-        {
-            for (var i = 0; i < N; i++)
+            else if (obj is PortalObject portal)
             {
-                for (var j = 0; j < M; j++)
-                {
-                    if (Cells[i, j].HasApple())
-                        return false;
-                }
+                //Player.EntersPortal(portal.DestinationX, portal.DestinationY);
             }
-
-            return true;
-        }
-
-        public int GetMaxApples()
-        {
-            int max = 0;
-            for (var i = 0; i < N; i++)
+            else if (obj is WallObject /*|| Player.EatsOwnTail()*/)
             {
-                for (var j = 0; j < M; j++)
-                {
-                    if (Cells[i, j].HasApple())
-                        max++;
-                }
+                //_state.Handle(new ChangeContentEvent(ChangeContentEventType.LevelSummary));
             }
-
-            return max;
         }
+    }
 
-        public int GetAtedApples() => this.Player.Length; 
-
-        public void Handle(KeyboardEvent @event)
+    private bool CheckVictoryConditions()
+    {
+        for (var i = 0; i < N; i++)
         {
-            this.Player.Handle(@event);
+            for (var j = 0; j < M; j++)
+            {
+                if (Cells[i, j].HasApple())
+                    return false;
+            }
         }
+
+        return true;
+    }
+
+    public int GetMaxApples()
+    {
+        int max = 0;
+        for (var i = 0; i < N; i++)
+        {
+            for (var j = 0; j < M; j++)
+            {
+                if (Cells[i, j].HasApple())
+                    max++;
+            }
+        }
+
+        return max;
+    }
+
+    public int GetAtedApples() => 0; // Player.Length; 
+
+    public void Handle(KeyboardEvent @event)
+    {
+        Player.Handle(@event);
     }
 }

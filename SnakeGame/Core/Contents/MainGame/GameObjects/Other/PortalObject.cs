@@ -1,4 +1,6 @@
-﻿using SFML.Graphics;
+﻿using Engine.Actors;
+using Engine.Events;
+using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.Levels;
 using System;
 using System.Collections.Generic;
@@ -13,10 +15,10 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Interactive
         Red, Blue
     }
 
-    internal class PortalObject : IGameObject
+    internal class PortalObject : GameActor
     {
-        public int X { get; private set; }
-        public int Y { get; private set; }
+        public override int X { get; protected set; }
+        public override int Y { get; protected set; }
 
         public int DestinationX { get; private set; }
         public int DestinationY { get; private set; }
@@ -40,12 +42,12 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Interactive
             };
         }
 
-        public void Draw(RenderTarget render)
+        public override void DrawBy(RenderTarget render)
         {
             render.Draw(Rectangle);
         }
 
-        public void Update()
+        public override void Update()
         {
 
         }
@@ -54,6 +56,16 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Interactive
         {
             DestinationX = end.X;
             DestinationY = end.Y;
+        }
+
+        public override void CheckCollisions()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Handle(KeyboardEvent @event)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,13 +1,8 @@
-﻿using Engine.Graphics;
+﻿using Engine.Events;
+using Engine.Graphics;
 using Engine.Random;
 using SFML.Graphics;
-using SnakeGame.Core.Contents.MainGame.GameObjects.Other;
 using SnakeGame.Core.Contents.MainGame.Levels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SnakeGame.Core.Contents.MainGame.GameObjects.Enemies
 {
@@ -66,6 +61,16 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Enemies
         {
             CurrentAnimation = Animations[IDDLE_ANIMATION];
             CurrentAnimation.Start();
+        }
+
+        public override void CheckCollisions()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Handle(KeyboardEvent @event)
+        {
+            throw new NotImplementedException();
         }
     }
 

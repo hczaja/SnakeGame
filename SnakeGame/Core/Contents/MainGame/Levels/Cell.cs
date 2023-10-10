@@ -1,4 +1,5 @@
-﻿using Engine.Core;
+﻿using Engine.Actors;
+using Engine.GameObjects;
 using Engine.Graphics;
 using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.GameObjects;
@@ -18,19 +19,19 @@ namespace SnakeGame.Core.Contents.MainGame.Levels
         private int X { get; }
         private int Y { get; }
 
-        public IGameObject GameObject { get; private set; }
+        public GameActor GameObject { get; private set; }
         
-        public Cell(int x, int y, IGameObject gameObject = null) =>
+        public Cell(int x, int y, GameActor gameObject = null) =>
             (X, Y, GameObject) = (x, y, gameObject);
 
         public bool IsEmpty() => GameObject is null || GameObject is EmptyObject;
 
-        public void Draw(RenderTarget render)
+        public void DrawBy(RenderTarget render)
         {
             if (IsEmpty()) return;
-            GameObject.Draw(render);
+            GameObject.DrawBy(render);
         }
-        internal void Fill(IGameObject gameObject)
+        internal void Fill(GameActor gameObject)
         {
             this.GameObject = gameObject;
         }

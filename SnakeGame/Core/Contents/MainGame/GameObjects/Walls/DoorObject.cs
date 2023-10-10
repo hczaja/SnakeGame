@@ -1,17 +1,14 @@
-﻿using SFML.Graphics;
+﻿using Engine.Actors;
+using Engine.Events;
+using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.Levels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SnakeGame.Core.Contents.MainGame.GameObjects.Walls
 {
-    internal class DoorObject : IGameObject
+    internal class DoorObject : GameActor
     {
-        public int X { get; private set; }
-        public int Y { get; private set; }
+        public override int X { get; protected set; }
+        public override int Y { get; protected set; }
 
         private readonly RectangleShape Shape;
 
@@ -30,14 +27,24 @@ namespace SnakeGame.Core.Contents.MainGame.GameObjects.Walls
             };
         }
 
-        public void Draw(RenderTarget render)
+        public override void DrawBy(RenderTarget render)
         {
             render.Draw(Shape);
         }
 
-        public void Update()
+        public override void Update()
         {
 
+        }
+
+        public override void CheckCollisions()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Handle(KeyboardEvent @event)
+        {
+            throw new NotImplementedException();
         }
     }
 }

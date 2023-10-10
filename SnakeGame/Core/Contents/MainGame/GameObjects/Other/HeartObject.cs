@@ -1,54 +1,60 @@
-﻿using SFML.Graphics;
+﻿using Engine.Actors;
+using Engine.Events;
+using SFML.Graphics;
 using SnakeGame.Core.Contents.MainGame.Levels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SnakeGame.Core.Contents.MainGame.GameObjects.Other
+namespace SnakeGame.Core.Contents.MainGame.GameObjects.Other;
+
+internal class HeartObject : GameActor
 {
-    internal class HeartObject : IGameObject
+    public override int X { get; protected set; }
+    public override int Y { get; protected set; }
+
+    public bool IsFull
     {
-        public int X { get; private set; }
-        public int Y { get; private set; }
-
-        public bool IsFull
+        get => IsFull;
+        private set
         {
-            get => IsFull;
-            private set
-            {
-                IsFull = value;
-                Rectangle.Texture = IsFull
-                    ? HEART_FULL_TEXTURE : HEART_EMPTY_TEXTURE;
-            }
+            IsFull = value;
+            Rectangle.Texture = IsFull
+                ? HEART_FULL_TEXTURE : HEART_EMPTY_TEXTURE;
         }
+    }
 
-        private readonly RectangleShape Rectangle;
-        private static readonly Texture HEART_FULL_TEXTURE = new Texture("Assets/HeartFull.png");
-        private static readonly Texture HEART_EMPTY_TEXTURE = new Texture("Assets/HeartEmpty.png");
+    private readonly RectangleShape Rectangle;
+    private static readonly Texture HEART_FULL_TEXTURE = new Texture("Assets/HeartFull.png");
+    private static readonly Texture HEART_EMPTY_TEXTURE = new Texture("Assets/HeartEmpty.png");
 
-        public HeartObject(IGameObject parent)
+    public HeartObject(GameActor parent)
+    {
+        this.X = parent.X;
+        this.Y = parent.Y;
+
+        this.Rectangle = new RectangleShape()
         {
-            this.X = parent.X;
-            this.Y = parent.Y;
+            Size = new(Cell.CELL_SIZE, Cell.CELL_SIZE),
+            Position = new(X * Cell.CELL_SIZE, Y * Cell.CELL_SIZE - 12f),
+            Texture = HEART_EMPTY_TEXTURE
+        };
+    }
 
-            this.Rectangle = new RectangleShape()
-            {
-                Size = new(Cell.CELL_SIZE, Cell.CELL_SIZE),
-                Position = new(X * Cell.CELL_SIZE, Y * Cell.CELL_SIZE - 12f),
-                Texture = HEART_EMPTY_TEXTURE
-            };
-        }
+    public override void DrawBy(RenderTarget drawer)
+    {
+        throw new NotImplementedException();
+    }
 
-        public void Draw(RenderTarget render)
-        {
-            render.Draw(Rectangle);
-        }
+    public override void CheckCollisions()
+    {
+        throw new NotImplementedException();
+    }
 
-        public void Update()
-        {
+    public override void Update()
+    {
+        throw new NotImplementedException();
+    }
 
-        }
+    public override void Handle(KeyboardEvent @event)
+    {
+        throw new NotImplementedException();
     }
 }

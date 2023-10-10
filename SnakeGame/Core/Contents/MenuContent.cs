@@ -1,19 +1,15 @@
 ﻿using Engine.Core;
 using Engine.Events;
+using Engine.GameState;
 using Engine.Graphics;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using SnakeGame.Core.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SnakeGame.Core.Contents
 {
-    internal class MenuContent : IContent
+    internal class MenuContent : IGameContent
     {
         private readonly IGameState _state;
 
@@ -44,11 +40,11 @@ namespace SnakeGame.Core.Contents
             this._buttons[this._currentButtonIndex].Cover();
         }
 
-        public void Draw(RenderTarget render)
+        public void DrawBy(RenderTarget render)
         {
             foreach (var button in _buttons)
             {
-                button.Draw(render);
+                button.DrawBy(render);
             }
         }
 
@@ -76,11 +72,11 @@ namespace SnakeGame.Core.Contents
                 }
                 else if (@event.Key == Keyboard.Key.Enter)
                 {
-                    _state.Handle(
-                        new ChangeContentEvent(
-                            this._currentButtonIndex == 0
-                                ? ChangeContentEventType.LevelsMenu
-                                : ChangeContentEventType.Exit));
+                    //_state.Handle(
+                    //    new ChangeContentEvent(
+                    //        this._currentButtonIndex == 0
+                    //            ? ChangeContentEventType.LevelsMenu
+                    //            : ChangeContentEventType.Exit));
                 }
 
                 foreach (var button in _buttons)

@@ -63,7 +63,7 @@ namespace Engine.Graphics
             IsStarted = false;
         }
 
-        public void Draw(RenderTarget render)
+        public void DrawBy(RenderTarget render)
         {
             if (!IsStarted)
                 return;

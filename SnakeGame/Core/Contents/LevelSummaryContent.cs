@@ -1,19 +1,14 @@
 ﻿using Engine.Events;
+using Engine.GameState;
 using Engine.Graphics;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using SnakeGame.Core.Events;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SnakeGame.Core.Contents
 {
-    internal class LevelSummaryContent : IContent
+    internal class LevelSummaryContent : IGameContent
     {
         private readonly IGameState _state;
         private readonly string _levelId;
@@ -31,7 +26,7 @@ namespace SnakeGame.Core.Contents
             this.Summary = new Text() 
             { 
                 Font = state.GetSettings().Font,
-                DisplayedString = (string)_state.ActualContent.GetAdditionalData(),
+                //DisplayedString = (string)_state.ActualContent.GetAdditionalData(),
                 Position = new (32f, 32f),
                 CharacterSize = 32
             };
@@ -56,13 +51,13 @@ namespace SnakeGame.Core.Contents
             this._buttons[this._currentButtonIndex].Cover();
         }
 
-        public void Draw(RenderTarget render)
+        public void DrawBy(RenderTarget render)
         {
             render.Draw(Summary);
 
             foreach (var button in _buttons)
             {
-                button.Draw(render);
+                button.DrawBy(render);
             }
         }
 
@@ -86,11 +81,11 @@ namespace SnakeGame.Core.Contents
                 }
                 else if (@event.Key == Keyboard.Key.Enter)
                 {
-                    _state.Handle(
-                        new ChangeContentEvent(
-                            this._currentButtonIndex == 0
-                                ? ChangeContentEventType.Game
-                                : ChangeContentEventType.LevelsMenu));
+                    //_state.Handle(
+                    //    new ChangeContentEvent(
+                    //        this._currentButtonIndex == 0
+                    //            ? ChangeContentEventType.Game
+                    //            : ChangeContentEventType.LevelsMenu));
                 }
 
                 foreach (var button in _buttons)

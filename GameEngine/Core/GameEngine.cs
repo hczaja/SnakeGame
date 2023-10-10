@@ -1,40 +1,32 @@
-﻿using Engine.Time;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Engine.Settings;
+using Engine.Time;
 
-namespace Engine.Core
+namespace Engine.Core;
+
+public class GameEngine
 {
-    public class GameEngine
+    private readonly GameWindow _window;
+    private readonly GameClock _clock;
+
+    public GameEngine(IGameCore game, IGameSettings settings)
+        => (_window, _clock) = (new GameWindow(game, settings), new GameClock(settings));
+
+    public void Start()
     {
-        private readonly GameWindow _window;
-        private readonly GameClock _clock;
-
-        public GameEngine(IGame game, IGameSettings settings)
+        while (_window.IsOpen())
         {
-            this._window = new GameWindow(game, settings);
-            this._clock = new GameClock(settings);
-        }
-
-        public void Start()
-        {
-            while (this._window.IsOpen())
+            _clock.Update();
+            if (_clock.IsUpdated())
             {
-                this._clock.Update();
-                if (this._clock.IsUpdated())
-                {
-                    this._window.DispatchEvents();
+                _window.DispatchEvents();
 
-                    this._window.Update();
+                _window.Update();
 
-                    this._window.Clear();
-                    this._window.Draw();
-                    this._window.Display();
+                _window.Clear();
+                _window.Draw();
+                _window.Display();
 
-                    this._clock.Restart();
-                }
+                _clock.Restart();
             }
         }
     }

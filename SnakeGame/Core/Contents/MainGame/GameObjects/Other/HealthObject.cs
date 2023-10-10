@@ -1,37 +1,43 @@
-﻿using SFML.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Engine.Actors;
+using Engine.Events;
+using SFML.Graphics;
+using System.Reflection;
 
-namespace SnakeGame.Core.Contents.MainGame.GameObjects.Other
+namespace SnakeGame.Core.Contents.MainGame.GameObjects.Other;
+
+internal class HealthObject : GameActor
 {
-    internal class HealthObject : IGameObject
+    private readonly List<HeartObject> _hearts;
+
+    public override int X { get; protected set; }
+    public override int Y { get; protected set; }
+
+    public HealthObject(GameActor parent)
     {
-        private readonly List<HeartObject> _hearts;
+        _hearts = new List<HeartObject>();
+        _hearts.Add(new HeartObject(parent));
+    }
 
-        public int X => throw new NotSupportedException();
-
-        public int Y => throw new NotSupportedException();
-
-        public HealthObject(IGameObject parent)
+    public override void DrawBy(RenderTarget drawer)
+    {
+        foreach (var heart in _hearts)
         {
-            _hearts = new List<HeartObject>();
-            _hearts.Add(new HeartObject(parent));
+            heart.DrawBy(drawer);
         }
+    }
 
-        public void Draw(RenderTarget render)
-        {
-            foreach (var heart in _hearts)
-            {
-                heart.Draw(render);
-            }
-        }
+    public override void CheckCollisions()
+    {
+        throw new NotImplementedException();
+    }
 
-        public void Update()
-        {
+    public override void Update()
+    {
+        throw new NotImplementedException();
+    }
 
-        }
+    public override void Handle(KeyboardEvent @event)
+    {
+        throw new NotImplementedException();
     }
 }

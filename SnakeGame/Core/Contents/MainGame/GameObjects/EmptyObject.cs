@@ -1,28 +1,19 @@
-﻿using SFML.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Engine.Actors;
+using Engine.Events;
+using SFML.Graphics;
 
 namespace SnakeGame.Core.Contents.MainGame.GameObjects
 {
-    internal class EmptyObject : IGameObject
+    internal class EmptyObject : GameActor
     {
         public static EmptyObject Instance = new EmptyObject();
 
-        public int X => throw new NotImplementedException();
+        public override int X { get; protected set; } = 1;
+        public override int Y { get; protected set; } = 1;
 
-        public int Y => throw new NotImplementedException();
-
-        public void Draw(RenderTarget render)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update()
-        {
-            throw new NotImplementedException();
-        }
+        public override void CheckCollisions() { }
+        public override void DrawBy(RenderTarget drawer) { }
+        public override void Handle(KeyboardEvent @event) { }
+        public override void Update() { }
     }
 }
